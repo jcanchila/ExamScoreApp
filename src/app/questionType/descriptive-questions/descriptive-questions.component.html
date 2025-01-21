@@ -1,0 +1,16 @@
+<!-- descriptive-questions.component.html -->
+<div class="questions-container">
+  <h2>Descriptive Questions</h2>
+  <form [formGroup]="questionsForm">
+    <div formArrayName="questions">
+      <div *ngFor="let question of questions.controls; let i = index" class="question-item">
+        <label for="answer-{{i}}">{{ getQuestionText(i) }}</label>
+        <textarea id="answer-{{i}}" [formControlName]="i" class="question-textarea"></textarea>
+      </div>
+    </div>
+  </form>
+  <div class="button-container">
+    <button type="button" (click)="navigateHome()" class="home-button">Go to Home</button>
+    <button type="button" (click)="navigateToScore()" class="score-button">See Score</button>
+  </div>
+</div>

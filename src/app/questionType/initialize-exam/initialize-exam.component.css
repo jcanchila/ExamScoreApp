@@ -1,0 +1,33 @@
+/* app.component.css */
+.button-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    gap: 40px;
+    flex-wrap: wrap;
+  }
+  
+  .question-button {
+    padding: 20px 40px;
+    font-size: 20px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+  }
+  
+  .question-button:hover {
+    background-color: #007bff;
+    color: white;
+    transform: scale(1.1);
+  }
+  
+  router-outlet {
+    border: 2px solid red; /* Esto es solo para depuración */
+  }
+  
+  :host {
+    display: block;
+  }
+  
