@@ -11,7 +11,7 @@
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  width: 80%; /* Aumenta el ancho del contenedor de las preguntas */
+  width: 80%; 
 }
 
 .question-textarea {
@@ -20,9 +20,9 @@
   border: 1px solid #ccc;
   border-radius: 5px;
   width: 900px;
-  height: 150px; /* Ajusta la altura según sea necesario */
+  height: 150px;
   margin-top: 5px;
-  resize: vertical; /* Permite redimensionar verticalmente */
+  resize: vertical;
 }
 
 .button-container {

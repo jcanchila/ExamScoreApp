@@ -1,0 +1,26 @@
+<!-- <p>true-false-questions works!</p> -->
+<div class="questions-container">
+    <h2>True / False Questions</h2>
+    <form [formGroup]="questionsForm">
+        <div *ngFor="let question of questionsList; let i = index" class="question-container">
+
+          <h3>{{ question.question }}</h3>
+      
+          <div *ngFor="let answer of question.answers">
+            <label>
+              <input
+                type="radio"
+                [formControlName]="'question' + i"
+                [value]="answer"
+              />
+              {{ answer }}
+            </label>
+          </div>
+        </div>
+      
+      </form>
+    <div class="button-container">
+      <button type="button" (click)="navigateHome()" class="home-button">Go to Home</button>
+      <button type="button" (click)="navigateToScore()" class="score-button">See Score</button>
+    </div>
+  </div>

@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { Router, RouterOutlet } from '@angular/router';
 
 @Component({
@@ -6,7 +7,7 @@ import { Router, RouterOutlet } from '@angular/router';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
   standalone: true,
-  imports:[RouterOutlet]
+  imports:[RouterOutlet],
 })
 export class AppComponent {
   title = 'ExamScoreApp';
