@@ -1,11 +1,19 @@
-/* descriptive-questions.component.css */
+html, body {
+  height: 100%;
+  margin: 0; /* Eliminar márgenes por defecto */
+}
+
+/* Contenedor principal que ocupa toda la ventana y permite desplazarse */
 .questions-container {
   display: flex;
   flex-direction: column;
   align-items: center;
   padding: 20px;
+  min-height: 100vh; /* Asegura que ocupe al menos la altura de la ventana */
+  overflow-y: auto; /* Permite el scroll si el contenido excede la altura de la ventana */
 }
 
+/* Otros estilos para los elementos internos */
 .question-item {
   margin-bottom: 20px;
   display: flex;

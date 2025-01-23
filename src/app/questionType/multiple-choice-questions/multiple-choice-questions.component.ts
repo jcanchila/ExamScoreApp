@@ -1,7 +1,11 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { BaseComponent } from '../../common/base-component.component';
+import { ToastrService } from 'ngx-toastr';
+import { TypeExamEnum } from '../../enums/type-exam.enum';
+import { Exam } from '../../models/exam.model';
 
 @Component({
   selector: 'app-multiple-choice-questions',
@@ -9,9 +13,10 @@ import { Router } from '@angular/router';
   templateUrl: './multiple-choice-questions.component.html',
   styleUrl: './multiple-choice-questions.component.css'
 })
-export class MultipleChoiceQuestionsComponent {
+export class MultipleChoiceQuestionsComponent extends BaseComponent implements OnInit {
 
-  questionsForm: FormGroup;
+  @Input() subject: string = '';
+  questionsForm!: FormGroup;
   questionsList: { question: string; options: string[] }[] = [
     {
       question: 'Describe your experience with Angular.',
@@ -51,25 +56,59 @@ export class MultipleChoiceQuestionsComponent {
     }
   ];
 
-  constructor(private fb: FormBuilder, private router: Router) {
-    this.questionsForm = this.fb.group(
-      this.questionsList.reduce((controls: { [key: string]: FormControl }, _, index) => {
-        controls['question' + index] = new FormControl('', Validators.required);
-        return controls;
-      }, {})
-    );
+  constructor(private fb: FormBuilder, private toastr: ToastrService) {
+    super();
   }
 
   ngOnInit(): void {
-    console.log('DescriptiveQuestionsComponent initialized');
+    this.questionsForm = this.fb.group({});
+
+    this.questionsList.forEach((_, index) => {
+      const controlKey = 'question' + index;
+      const savedAnswers = JSON.parse(localStorage.getItem(`${TypeExamEnum.MULTISELECTION}-${controlKey}`) || '[]');
+      this.questionsForm.addControl(controlKey, new FormControl(savedAnswers, Validators.required));
+    });
   }
 
+  onCheckboxChange(event: Event, questionKey: string, option: string) {
+    const selectedOptions: string[] = this.questionsForm.get(questionKey)?.value || [];
 
-  navigateHome() {
-    this.router.navigate(['/home']);
+    if ((event.target as HTMLInputElement).checked) {
+      selectedOptions.push(option);
+    } else {
+      const index = selectedOptions.indexOf(option);
+      if (index > -1) {
+        selectedOptions.splice(index, 1);
+      }
+    }
+
+    this.questionsForm.get(questionKey)?.setValue(selectedOptions);
+    localStorage.setItem(`${TypeExamEnum.MULTISELECTION}-${questionKey}`, JSON.stringify(selectedOptions));
   }
 
-  navigateToScore() {
-    this.router.navigate(['/score']);
+  override back(): void {
+    this.emitActionBack();
+  }
+
+  override goToScore(): void {
+    if (this.questionsForm.invalid) {
+      this.toastr.warning('Warning', 'Please answer all the questions');
+      return;
+    }
+    const answers = this.questionsForm.value;
+
+    const result = this.questionsList.map((item, index) => ({
+      question: item.question,
+      answers: [answers['question' + index] || 'No answer']
+    }));
+
+    const response = {
+      "examType": TypeExamEnum.MULTISELECTION,
+      "subject": this.subject,
+      "questionList": result
+    };
+
+    const exam = Exam.fromJSON(response);
+    this.emitActionGoToScore(exam);
   }
 }

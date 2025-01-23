@@ -1,0 +1,16 @@
+<div class="questions-container">
+  <div *ngIf="typeExam === 'descriptive'">
+    <app-descriptive-questions [subject]="subject" (actionBack)="handleBack()"
+      (actionGoToScore)="handleGoToScore($event)"></app-descriptive-questions>
+  </div>
+
+  <div *ngIf="typeExam === 'multiselection'">
+    <app-multiple-choice-questions [subject]="subject" (actionBack)="handleBack()"
+      (actionGoToScore)="handleGoToScore($event)"></app-multiple-choice-questions>
+  </div>
+
+  <div *ngIf="typeExam === 'true-false'">
+    <app-true-false-questions [subject]="subject" (actionBack)="handleBack()"
+      (actionGoToScore)="handleGoToScore($event)"></app-true-false-questions>
+  </div>
+</div>

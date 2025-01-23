@@ -1,0 +1,118 @@
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+  background-color: #f4f4f9;
+}
+
+.container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  overflow-y: auto;
+}
+
+:host {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  height: 100%;
+  margin: 0;
+  overflow: hidden;
+}
+
+.card {
+  width: 800px;
+  padding: 20px;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.card-title {
+  margin-bottom: 16px;
+  font-size: 24px;
+  font-weight: bold;
+  color: #333;
+}
+
+.btn-green {
+  background-color: #28a745;
+  color: white;
+  padding: 12px 24px;
+  font-size: 16px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.btn-green:hover {
+  background-color: #218838;
+}
+
+.button-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  flex-wrap: wrap;
+  margin-top: 20px;
+}
+
+.question-button {
+  padding: 12px 24px;
+  font-size: 16px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.question-button:hover {
+  background-color: #007bff;
+  color: white;
+  transform: scale(1.05);
+}
+
+router-outlet {
+  border: 2px solid red;
+}
+
+.dropdown-container {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 16px;
+}
+
+.dropdown-label {
+  font-size: 14px;
+  font-weight: bold;
+  margin-bottom: 8px;
+  color: #333;
+}
+
+.dropdown {
+  width: 100%;
+  padding: 8px 12px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #fff;
+  color: #333;
+  appearance: none;
+  outline: none;
+  cursor: pointer;
+}
+
+.space-below {
+  margin-bottom: 32px;
+}

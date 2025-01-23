@@ -12,6 +12,7 @@
                 type="radio"
                 [formControlName]="'question' + i"
                 [value]="answer"
+                (change)="onAnswerChange('question' + i, answer)"
               />
               {{ answer }}
             </label>
@@ -20,7 +21,7 @@
       
       </form>
     <div class="button-container">
-      <button type="button" (click)="navigateHome()" class="home-button">Go to Home</button>
-      <button type="button" (click)="navigateToScore()" class="score-button">See Score</button>
+      <button type="button" (click)="back()" class="home-button">Go to Home</button>
+      <button type="button" (click)="goToScore()" class="score-button">See Score</button>
     </div>
   </div>
