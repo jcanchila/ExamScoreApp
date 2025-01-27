@@ -1,16 +1,24 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { delay, Observable, of } from 'rxjs';
+import { BaseClient } from './base-client';
 
 @Injectable({
   providedIn: 'root'
 })
-export class ApiService {
+export class ApiService extends BaseClient {
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) {
+    super();
+  }
 
-  post(body: any): Observable<any> {
-    const simulatedResponse: any = body;
-    return of(simulatedResponse).pipe(delay(2000));
+  getSubject(): Observable<any> {
+    const url = '/api/subjects';  // URL simulada
+    return this.getFake(url); 
+  }
+
+  getExamType(): Observable<any> {
+    const url = '/api/examTypes';  // URL simulada
+    return this.getFake(url); 
   }
 }

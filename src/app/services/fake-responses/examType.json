@@ -1,0 +1,17 @@
+[
+    {
+        "id": 1,
+        "code": "descriptive",
+        "type": "Descriptive"
+    },
+    {
+        "id": 2,
+        "code": "multiselection",
+        "type": "Multiple Choice"
+    },
+    {
+        "id": 3,
+        "code": "true-false",
+        "type": "True/False"
+    }
+]

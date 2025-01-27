@@ -1,24 +1,30 @@
-
 <div class="questions-container">
-  <h2>Multiple Choise Questions</h2>
-  <form [formGroup]="questionsForm">
-    <div *ngFor="let question of questionsList; let i = index" class="question-container">
+  <h2>Multiple Choice Questions</h2>
 
+  <ng-container *ngFor="let question of questionsList; let i = index">
+    <div *ngIf="i === currentStep" class="question-container">
       <h3>{{ question.question }}</h3>
-
+  
       <div *ngFor="let option of question.options">
         <label>
           <input type="checkbox" 
-          [checked]="questionsForm.get('question' + i)?.value.includes(option)"
-          (change)="onCheckboxChange($event, 'question' + i, option)"
-          />
+                 [checked]="question.answer.includes(option)"
+                 (change)="onCheckboxChange($event, question.id, option)" />
           {{ option }}
         </label>
       </div>
     </div>
-  </form>
-  <div class="button-container">
-    <button type="button" (click)="back()" class="home-button">Go to Home</button>
-    <button type="button" (click)="goToScore()" class="score-button">See Score</button>
+  </ng-container>
+
+  <div class="wizard-navigation">
+    <button (click)="prevStep()" [disabled]="currentStep === 0">Back</button>
+  
+    <button (click)="nextStep()" [disabled]="!isCurrentStepValid()" *ngIf="currentStep < questionsList.length - 1">
+      Next
+    </button>
+  
+    <button (click)="goToScore()" *ngIf="currentStep === questionsList.length - 1">
+      Finish
+    </button>
   </div>
 </div>

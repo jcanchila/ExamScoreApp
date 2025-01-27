@@ -1,0 +1,22 @@
+[
+    {
+        "id": 1,
+        "value": "finance",
+        "name": "Finance"
+    },
+    {
+        "id": 2,
+        "value": "marketing",
+        "name": "Marketing"
+    },
+    {
+        "id": 3,
+        "value": "human-resources",
+        "name": "Human Resources"
+    },
+    {
+        "id": 4,
+        "value": "computer-science",
+        "name": "Computer Science"
+    }
+]

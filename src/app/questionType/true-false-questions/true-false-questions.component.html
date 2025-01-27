@@ -1,27 +1,30 @@
-<!-- <p>true-false-questions works!</p> -->
 <div class="questions-container">
-    <h2>True / False Questions</h2>
-    <form [formGroup]="questionsForm">
-        <div *ngFor="let question of questionsList; let i = index" class="question-container">
+  <h2>Single Choice Questions</h2>
 
-          <h3>{{ question.question }}</h3>
-      
-          <div *ngFor="let answer of question.answers">
-            <label>
-              <input
-                type="radio"
-                [formControlName]="'question' + i"
-                [value]="answer"
-                (change)="onAnswerChange('question' + i, answer)"
-              />
-              {{ answer }}
-            </label>
-          </div>
-        </div>
-      
-      </form>
-    <div class="button-container">
-      <button type="button" (click)="back()" class="home-button">Go to Home</button>
-      <button type="button" (click)="goToScore()" class="score-button">See Score</button>
+  <div *ngIf="questionsList[currentStep]" class="question-container">
+    <h3>{{ questionsList[currentStep].question }}</h3>
+
+    <div *ngFor="let answer of questionsList[currentStep].answers">
+      <label>
+        <input
+          type="radio"
+          [name]="'question' + currentStep" 
+          [value]="answer"
+          (change)="onAnswerChange(answer)"
+          [checked]="questionsList[currentStep].answer === answer" 
+        />
+        {{ answer }}
+      </label>
     </div>
   </div>
+
+  <div class="wizard-navigation">
+    <button (click)="prevStep()" [disabled]="currentStep === 0">Back</button>
+    <button (click)="nextStep()" [disabled]="!isCurrentStepValid()" *ngIf="currentStep < questionsList.length - 1">
+      Next
+    </button>
+    <button (click)="goToScore()" *ngIf="currentStep === questionsList.length - 1">
+      Finish
+    </button>
+  </div>
+</div>

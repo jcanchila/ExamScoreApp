@@ -1,4 +1,4 @@
-import { Component, EventEmitter, input, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, input, Input, OnChanges, OnDestroy, Output, SimpleChanges } from '@angular/core';
 import { DescriptiveQuestionsComponent } from '../questionType/descriptive-questions/descriptive-questions.component';
 import { CommonModule } from '@angular/common';
 import { TypeExamEnum } from '../enums/type-exam.enum';
@@ -7,6 +7,9 @@ import { TrueFalseQuestionsComponent } from "../questionType/true-false-question
 import { Router } from '@angular/router';
 import { Exam } from '../models/exam.model';
 import { ApiService } from '../services/api.service';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { BrowserModule } from '@angular/platform-browser';
+import { SecondsToTimePipe } from "../pipes/seconds-to-time.pipe";
 
 @Component({
   selector: 'app-select-questions',
@@ -14,16 +17,20 @@ import { ApiService } from '../services/api.service';
     CommonModule,
     DescriptiveQuestionsComponent,
     MultipleChoiceQuestionsComponent,
-    TrueFalseQuestionsComponent
+    TrueFalseQuestionsComponent,
+    SecondsToTimePipe
   ],
   templateUrl: './select-questions.component.html',
   styleUrl: './select-questions.component.css'
 })
-export class SelectQuestionsComponent implements OnChanges {
+export class SelectQuestionsComponent implements OnChanges, OnDestroy {
 
   @Input() subject: string = '';
   @Input() typeExam!: TypeExamEnum;
   @Output() actionBack = new EventEmitter<void>();
+
+  timeInSeconds: number = 65;
+  timer: any;
 
   constructor(private router: Router, private apiService: ApiService) { }
 
@@ -31,6 +38,8 @@ export class SelectQuestionsComponent implements OnChanges {
     if (changes['typeExam'].currentValue) {
       this.typeExam = changes['typeExam'].currentValue;
     }
+    this.loadTime();
+    this.startTimer();
   }
 
   handleBack() {
@@ -38,14 +47,35 @@ export class SelectQuestionsComponent implements OnChanges {
   }
 
   handleGoToScore(exam: Exam) {
-    this.apiService.post(exam).subscribe(
-      (response) => {
-        this.router.navigate(['/score']);
-      },
-      (error) => {
-        console.error('Error:', error);
-      }
-    );
+    this.router.navigate(['/score']);
+  }
 
+  ngOnDestroy(): void {
+    clearInterval(this.timer);
+  }
+
+  saveTime(): void {
+    localStorage.setItem('time', this.timeInSeconds.toString());
+  }
+
+  loadTime(): void {
+    const savedTime = localStorage.getItem('time');
+    if (savedTime && parseInt(savedTime) === 0) {
+      this.router.navigate(['/score']);
+    } else {
+      this.timeInSeconds = savedTime ? parseInt(savedTime) : this.timeInSeconds;
+    }
+  }
+
+  startTimer(): void {
+    this.timer = setInterval(() => {
+      if (this.timeInSeconds > 0) {
+        this.timeInSeconds--;
+        this.saveTime();
+      } else {
+        clearInterval(this.timer);
+        this.router.navigate(['/score']);
+      }
+    }, 1000);
   }
 }

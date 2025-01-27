@@ -6,14 +6,14 @@ import { SelectQuestionsComponent } from "../select-questions/select-questions.c
 import { TypeExamEnum } from '../enums/type-exam.enum';
 import { DescriptiveQuestionsComponent } from "../questionType/descriptive-questions/descriptive-questions.component";
 import { ToastrService } from 'ngx-toastr';
+import { ApiService } from '../services/api.service';
 
 @Component({
   selector: 'app-initialize-exam',
   imports: [
     FormsModule,
     CommonModule,
-    ReactiveFormsModule,
-    SelectQuestionsComponent
+    ReactiveFormsModule
   ],
   templateUrl: './initialize-exam.component.html',
   styleUrl: './initialize-exam.component.css'
@@ -24,42 +24,79 @@ export class InitializeExamComponent implements OnInit {
   typeExamSelected: TypeExamEnum = TypeExamEnum.DESCRIPTIVE;
   startExam: boolean = false;
   optionsTypeExam: any[] = [
-    { value: TypeExamEnum.DESCRIPTIVE, text: 'Descriptive' },
-    { value: TypeExamEnum.MULTISELECTION, text: 'Multiselection' },
-    { value: TypeExamEnum.TRUE_FALSE, text: 'True/False' },
+    // { value: TypeExamEnum.DESCRIPTIVE, text: 'Descriptive' },
+    // { value: TypeExamEnum.MULTISELECTION, text: 'Multiselection' },
+    // { value: TypeExamEnum.TRUE_FALSE, text: 'True/False' },
   ];
 
-  optionsTypeSubject: any[] = [
-    { value: 'finance', text: 'Finance' },
-    { value: 'math', text: 'Math' },
-    { value: 'geography', text: 'Geography' },
-  ];
+  optionsTypeSubject: any[] = [];
 
   constructor(
     private router: Router,
     private fb: FormBuilder,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private readonly apiService: ApiService
   ) { }
 
   ngOnInit(): void {
+    this.getExamType();
+    this.getSubjetc();
     this.examForm = this.fb.group({
       subject: ['finance'],
       typeExam: ['descriptive']
     });
   }
 
-  initExam() {
+  getSubjetc() {
+    this.apiService.getSubject().subscribe(
+      (response) => {
+        this.optionsTypeSubject = response;
+      },
+      (erro) => {
+        this.toastr.error('Ups!! Something went wrong');
+      }
+    );
+  }
+
+  getExamType() {
+    this.apiService.getExamType().subscribe(
+      (response) => {
+        response.forEach((element: any) => {
+          switch (element.code.toLowerCase()) {
+            case 'descriptive':
+              this.optionsTypeExam.push({ value: TypeExamEnum.DESCRIPTIVE, text: element.type });
+              break;
+            case 'multiselection':
+              this.optionsTypeExam.push({ value: TypeExamEnum.MULTISELECTION, text: element.type });
+              break;
+            case 'true-false':
+              this.optionsTypeExam.push({ value: TypeExamEnum.TRUE_FALSE, text: element.type });
+              break;
+          }
+        });
+      },
+      (error) => {
+        this.toastr.error('Ups!! Something went wrong');
+      }
+    );
+  }
+
+  initExam(){
     this.subjectSelected = this.examForm.value.subject;
     if (this.subjectSelected === 'finance') {
       let type = this.examForm.value.typeExam;
-      this.startExam = true;
       this.typeExamSelected = type;
+      this.startExam = true;
     } else {
       this.toastr.warning(`The exam for ${this.subjectSelected} is not available yet`);
     }
   }
 
-  handleBack() {
-    this.startExam = false;
+  goToQuestions() {
+    this.router.navigate(['/start-exam/type-exam', this.typeExamSelected, 'subject' ,this.subjectSelected]);
   }
+
+  // handleBack() {
+  //   // this.startExam = false;
+  // }
 }

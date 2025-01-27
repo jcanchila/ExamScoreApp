@@ -1,19 +1,38 @@
-
 <div class="questions-container">
   <h2>Descriptive Questions</h2>
 
-  <form [formGroup]="questionsForm">
-    <div *ngFor="let question of questionsList; let i = index" class="question-item">
-      <label for="answer-{{i}}">{{ question }}</label>
-      <textarea
-        id="answer-{{i}}"
-        [formControlName]="'question' + i"
-        (change)="onAnswerChange('question' + i, $event)"
+  <div>
+    <div class="question-item" *ngIf="currentStep <= questionsList.length">
+      <label for="answer-{{ currentStep }}">{{ questionsList[currentStep].question }}</label>
+      <textarea 
+      id="answer-{{ currentStep }}" [(ngModel)]="questionsList[currentStep].answer" (input)="onAnswerChange()"
+      [maxlength]="questionsList[currentStep].max"
         class="question-textarea">
       </textarea>
+
+      <div class="character-count">
+        <span>{{ questionsList[currentStep].answer.length }} / {{questionsList[currentStep].max}}</span>
+      </div>
+
+      <div *ngIf="questionsList[currentStep].answer.length < questionsList[currentStep].min">
+        <span class="error-message">Minimum length is 10 characters.</span>
+      </div>
     </div>
-  </form>
-  <div class="button-container">
+
+    <div class="wizard-navigation">
+      <button (click)="prevStep()" [disabled]="currentStep === 0">Back</button>
+      <button (click)="nextStep()" [disabled]="!isCurrentStepValid()" *ngIf="currentStep < questionsList.length - 1">
+        Next
+      </button>
+
+      <button (click)="goToScore()" *ngIf="currentStep === questionsList.length - 1">
+        Finish
+      </button>
+    </div>
+
+  </div>
+
+  <div class="button-container" *ngIf="currentStep === questionsList.length">
     <button type="button" (click)="back()" class="home-button">Go to Home</button>
     <button type="button" (click)="goToScore()" class="score-button">See Score</button>
   </div>

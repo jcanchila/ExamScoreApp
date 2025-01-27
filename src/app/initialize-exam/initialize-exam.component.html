@@ -1,4 +1,62 @@
-<div *ngIf="startExam == true; else elseTemplate" class="container">
+<div *ngIf="startExam == true; else elseTemplate">
+  <div class="container mt-5">
+    <div class="form-container">
+      <h2 class="form-title">Rules Exam</h2>
+
+      <p>Please note that the exam has a strict time limit of <strong>10 minutes</strong>. Once the exam begins,
+        you
+        will have exactly 10 minutes to complete all the questions. The timer will start automatically, and you
+        will
+        be able to see the remaining time displayed on the screen.</p>
+
+      <div class="d-grid">
+        <button class="btn btn-primary" (click)="goToQuestions()">Start Exam</button>
+      </div>
+    </div>
+  </div>
+</div>
+<ng-template #elseTemplate>
+  <form [formGroup]="examForm" (ngSubmit)="initExam()">
+    <div class="container mt-5">
+      <div class="form-container">
+        <h2 class="form-title">Exam</h2>
+
+        <div class="mb-4">
+          <label for="subject" class="form-label">Subject</label>
+          <select class="form-select" id="subject" formControlName="subject">
+            <option *ngFor="let option of optionsTypeSubject" [value]="option.value">
+              {{ option.name }}
+            </option>
+          </select>
+        </div>
+
+        <div class="mb-4">
+          <label for="typeExam" class="form-label">Type Exam</label>
+          <select class="form-select" id="typeExam" formControlName="typeExam">
+            <option *ngFor="let option of optionsTypeExam" [value]="option.value">
+              {{ option.text }}
+            </option>
+          </select>
+        </div>
+
+        <div class="d-grid">
+          <button class="btn btn-primary">Next</button>
+        </div>
+      </div>
+    </div>
+  </form>
+</ng-template>
+
+<!-- <div *ngIf="startExam == true; else elseTemplate" class="container">
+  <app-select-questions [subject]="subjectSelected" [typeExam]="typeExamSelected"
+    (actionBack)="handleBack()"></app-select-questions>
+</div>
+<ng-template #elseTemplate>
+  
+</ng-template> -->
+
+
+<!-- <div *ngIf="startExam == true; else elseTemplate" class="container">
   <app-select-questions 
   [subject]="subjectSelected" 
   [typeExam]="typeExamSelected" 
@@ -36,4 +94,4 @@
       <button type="submit" class="btn-green">Start Exam</button>
     </div>
   </form>
-</ng-template>
+</ng-template> -->

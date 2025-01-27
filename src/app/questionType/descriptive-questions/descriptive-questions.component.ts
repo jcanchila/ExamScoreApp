@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, FormArray, ReactiveFormsModule, FormControl, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, FormArray, ReactiveFormsModule, FormControl, Validators, FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { BaseComponent } from '../../common/base-component.component';
@@ -12,52 +12,73 @@ import { Exam } from '../../models/exam.model';
   templateUrl: './descriptive-questions.component.html',
   styleUrls: ['./descriptive-questions.component.css'],
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule]
+  imports: [CommonModule, ReactiveFormsModule, FormsModule]
 })
 export class DescriptiveQuestionsComponent extends BaseComponent implements OnInit {
 
   @Input() subject: string = '';
+  currentStep: number = 0;
 
-  questionsForm!: FormGroup;
-  questionsList: string[] = [
-    'Describe your experience with Angular.',
-    'What are the main features of Angular?',
-    'How do you handle state management in Angular?',
-    'Explain the Angular lifecycle hooks.'
+  questionsList: any[] = [
+    { id: 1, question: 'Describe your experience with Angular.', answer: '', min: 1, max: 2000 },
+    { id: 2, question: 'What are the main features of Angular?', answer: '', min: 10, max: 2000 },
+    { id: 3, question: 'How do you handle state management in Angular?', answer: '', min: 1, max: 2000 },
+    { id: 4, question: 'Explain the Angular lifecycle hooks.', answer: '', min: 1, max: 2000 }
   ];
 
-  constructor(private fb: FormBuilder, private toastr: ToastrService) {
+  constructor(private toastr: ToastrService) {
     super();
   }
 
   ngOnInit(): void {
-    this.questionsForm = this.fb.group({});
-    this.questionsList.forEach((_, index) => {
-      const controlName = 'question' + index;
-      const savedAnswer = localStorage.getItem(`${TypeExamEnum.DESCRIPTIVE}-${controlName}`) || '';
-      this.questionsForm.addControl(controlName, new FormControl(savedAnswer, Validators.required));
-    });
+    let jsonSaved = localStorage.getItem(TypeExamEnum.DESCRIPTIVE);
+    if (jsonSaved) {
+      let answersPreSaved = JSON.parse(jsonSaved);
+      this.questionsList.forEach(
+        (item)=> {
+          item.answer = answersPreSaved.find((answer: any) => answer.id === item.id)?.answer || '';
+        }
+      );
+    }
   }
 
-  onAnswerChange(controlName: string, value: any) {
-    localStorage.setItem(`${TypeExamEnum.DESCRIPTIVE}-${controlName}`, value.target.value);
-    console.log(`Respuesta guardada para ${controlName}: ${value}`);
+  onAnswerChange() {
+    localStorage.setItem(`${TypeExamEnum.DESCRIPTIVE}`, JSON.stringify(this.questionsList));
   }
 
   override back(): void {
     this.emitActionBack();
   }
 
-  override goToScore(): void {
-    if (this.questionsForm.invalid) {
-      this.toastr.warning('Warning', 'Please answer all the questions');
+  isCurrentStepValid(): boolean {
+    return !!this.questionsList[this.currentStep].answer;
+  }
+
+  nextStep() {
+    if (!this.questionsList[this.currentStep].answer) {
+      this.toastr.warning('Warning', 'Please answer the question');
       return;
     }
-    const answers = this.questionsForm.value;
 
+    if (this.questionsList[this.currentStep].answer.length < this.questionsList[this.currentStep].min) {
+      this.toastr.warning('Warning', 'Please answer the question with at least ' + this.questionsList[this.currentStep].min + ' characters');
+      return;
+    }
+    if (this.currentStep < this.questionsList.length - 1) {
+      this.currentStep++;
+    }
+  }
+
+  prevStep() {
+    if (this.currentStep > 0) {
+      this.currentStep--;
+    }
+  }
+
+  override goToScore(): void {
     const result = this.questionsList.map((item, index) => ({
       question: item,
-      answers: [answers['question' + index] || '']
+      answers: [item.answer || '']
     }));
 
     const response = {

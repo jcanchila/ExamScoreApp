@@ -1,0 +1,25 @@
+.form-container {
+    max-width: 500px;
+    margin: 0 auto;
+    padding: 30px;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .form-title {
+    font-size: 24px;
+    font-weight: 600;
+    margin-bottom: 30px;
+    text-align: center;
+  }
+  
+  .btn-primary {
+    background-color: #2e6f43;
+    border-color: #2e6f43;
+  }
+  
+  .btn-primary:hover {
+    background-color: #245b36;
+    border-color: #245b36;
+  }

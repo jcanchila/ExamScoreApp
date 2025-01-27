@@ -7,8 +7,7 @@
     margin: 0;
     overflow: hidden;
   }
-  
-  /* Card styles */
+
   .card {
     width: 300px;
     padding: 20px;
@@ -21,8 +20,7 @@
     justify-content: center;
     align-items: center;
   }
-  
-  /* Title styles */
+
   .card-title {
     margin-bottom: 16px;
     font-size: 18px;
