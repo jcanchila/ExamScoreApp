@@ -21,45 +21,45 @@ export class MultipleChoiceQuestionsComponent extends BaseComponent implements O
   questionsList: { id: number, question: string; options: string[], answer: any[] }[] = [
     {
       id: 1,
-      question: 'Describe your experience with Angular.',
+      question: 'What is the average annual rate of return mentioned in the document?',
       options: [
-        'I have over 3 years of experience.',
-        'I am currently learning Angular.',
-        'I have worked on several Angular projects.',
-        'I have minimal experience with Angular.'
+        'A) 5%',
+        'B) 8%',
+        'C) 10%',
+        'D) 12%.'
       ],
       answer: []
     },
     {
       id: 2,
-      question: 'What are the main features of Angular?',
+      question: 'What is one of the critical parts of financial planning mentioned in the document?',
       options: [
-        'Two-way data binding',
-        'Dependency injection',
-        'Directives and components',
-        'Comprehensive testing tools'
+        'A) Income statements',
+        'B) Cash flow statements',
+        'C) Tax returns',
+        'D) Investment portfolios'
       ],
       answer: []
     },
     {
       id: 3,
-      question: 'How do you handle state management in Angular?',
+      question: 'What does the Dodd-Frank Act of 2008 aim to address?',
       options: [
-        'I use NgRx for state management.',
-        'I use services to manage state.',
-        'I prefer using BehaviorSubject for state management.',
-        'I use third-party libraries like Akita or MobX.'
+        'A) Increase in taxes',
+        'B) Regulatory framework',
+        'C) Consumer protection',
+        'D) Stock market growth.'
       ],
       answer: []
     },
     {
       id: 4,
-      question: 'Explain the Angular lifecycle hooks.',
+      question: 'What is the main focus of finance as described in the document?',
       options: [
-        'They allow developers to hook into key events in a component’s lifecycle.',
-        'Lifecycle hooks include OnInit, OnDestroy, and others.',
-        'They are methods called by Angular to perform specific tasks.',
-        'They are optional but useful for handling logic during the lifecycle.'
+        'A) Maximizing profits',
+        'B) Trade-off between risk and expected return',
+        'C) Minimizing costs',
+        'D) Increasing market share'
       ],
       answer: []
     }

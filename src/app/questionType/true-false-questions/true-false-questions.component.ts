@@ -20,10 +20,10 @@ export class TrueFalseQuestionsComponent extends BaseComponent {
   currentStep: number = 0; 
 
   questionsList: { id: number, question: string; answers: string[], answer: string }[] = [
-    { id: 1, question: 'Is your experience with Angular sufficient?', answers: ['True', 'False'], answer: '' },
-    { id: 2, question: 'Does Angular provide dependency injection?', answers: ['True', 'False'], answer: '' },
-    { id: 3, question: 'Can state management in Angular be done with services?', answers: ['True', 'False'], answer: '' },
-    { id: 4, question: 'Are Angular lifecycle hooks mandatory?', answers: ['True', 'False'], answer: '' }
+    { id: 1, question: 'Cash flow statements are not important for financial planning.?', answers: ['True', 'False'], answer: '' },
+    { id: 2, question: 'The average annual rate of return mentioned in the document is 10%.', answers: ['True', 'False'], answer: '' },
+    { id: 3, question: 'Diversity in boards of directors is considered an important quality.', answers: ['True', 'False'], answer: '' },
+    { id: 4, question: 'Inflation risk occurs when investors have more purchasing power from their investments due to rising prices.', answers: ['True', 'False'], answer: '' }
   ];
 
   constructor(private toastr: ToastrService) {
