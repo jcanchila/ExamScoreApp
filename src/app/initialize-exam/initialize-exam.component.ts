@@ -2,9 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, NgModel, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-import { SelectQuestionsComponent } from "../select-questions/select-questions.component";
 import { TypeExamEnum } from '../enums/type-exam.enum';
-import { DescriptiveQuestionsComponent } from "../questionType/descriptive-questions/descriptive-questions.component";
 import { ToastrService } from 'ngx-toastr';
 import { ApiService } from '../services/api.service';
 
