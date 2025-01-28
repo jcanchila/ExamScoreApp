@@ -20,10 +20,10 @@ export class DescriptiveQuestionsComponent extends BaseComponent implements OnIn
   currentStep: number = 0;
 
   questionsList: any[] = [
-    { id: 1, question: 'How Does a Company Recognize a Sale and an Expense.?', answer: '', min: 1, max: 2000 },
+    { id: 1, question: 'How Does a Company Recognize a Sale and an Expense.?', answer: '', min: 10, max: 2000 },
     { id: 2, question: 'When Should a Company Capitalize or Expense an Item?', answer: '', min: 10, max: 2000 },
-    { id: 3, question: 'What Is a Fixed Asset?', answer: '', min: 1, max: 2000 },
-    { id: 4, question: 'What Is Depreciation.?', answer: '', min: 1, max: 2000 }
+    { id: 3, question: 'What Is a Fixed Asset?', answer: '', min: 10, max: 2000 },
+    { id: 4, question: 'What Is Depreciation.?', answer: '', min: 10, max: 2000 }
   ];
 
   constructor(private toastr: ToastrService) {
