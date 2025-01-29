@@ -21,11 +21,7 @@ export class InitializeExamComponent implements OnInit {
   subjectSelected: string = 'finance';
   typeExamSelected: TypeExamEnum = TypeExamEnum.DESCRIPTIVE;
   startExam: boolean = false;
-  optionsTypeExam: any[] = [
-    // { value: TypeExamEnum.DESCRIPTIVE, text: 'Descriptive' },
-    // { value: TypeExamEnum.MULTISELECTION, text: 'Multiselection' },
-    // { value: TypeExamEnum.TRUE_FALSE, text: 'True/False' },
-  ];
+  optionsTypeExam: any[] = [];
 
   optionsTypeSubject: any[] = [];
 
@@ -93,8 +89,4 @@ export class InitializeExamComponent implements OnInit {
   goToQuestions() {
     this.router.navigate(['/start-exam/type-exam', this.typeExamSelected, 'subject' ,this.subjectSelected]);
   }
-
-  // handleBack() {
-  //   // this.startExam = false;
-  // }
 }

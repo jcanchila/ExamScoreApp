@@ -1,7 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, FormArray, ReactiveFormsModule, FormControl, Validators, FormsModule } from '@angular/forms';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { Router } from '@angular/router';
 import { BaseComponent } from '../../common/base-component.component';
 import { ToastrService } from 'ngx-toastr';
 import { TypeExamEnum } from '../../enums/type-exam.enum';
