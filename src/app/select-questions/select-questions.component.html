@@ -1,7 +1,14 @@
 <div class="banner">
   <p> {{ timeInSeconds | secondsToTime }} remaining to finish the exam.</p>
 </div>
+
 <div class="questions-container">
+  <button class="btn btn-warning" (click)="handleBack()">Volver al Home</button>
+  <div class="centered-text">    
+    <div>
+      Question {{questionsAnswered}} / {{quantityQuestions}}
+    </div>
+  </div>
   <div *ngIf="typeExam === 'descriptive'">
     <app-descriptive-questions [subject]="subject" (actionBack)="handleBack()"
       (actionGoToScore)="handleGoToScore($event)"></app-descriptive-questions>

@@ -8,7 +8,7 @@
       <label>
         <input
           type="radio"
-          [name]="'question' + currentStep" 
+          [name]="'question' + currentStep"
           [value]="answer"
           (change)="onAnswerChange(answer)"
           [checked]="questionsList[currentStep].answer === answer" 
@@ -23,7 +23,7 @@
     <button (click)="nextStep()" [disabled]="!isCurrentStepValid()" *ngIf="currentStep < questionsList.length - 1">
       Next
     </button>
-    <button (click)="goToScore()" *ngIf="currentStep === questionsList.length - 1">
+    <button (click)="goToScore()" [disabled]="!isCurrentStepValid()" *ngIf="currentStep === questionsList.length - 1">
       Finish
     </button>
   </div>

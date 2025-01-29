@@ -23,7 +23,7 @@
       Next
     </button>
   
-    <button (click)="goToScore()" *ngIf="currentStep === questionsList.length - 1">
+    <button (click)="goToScore()" [disabled]="!isCurrentStepValid()" *ngIf="currentStep === questionsList.length - 1">
       Finish
     </button>
   </div>

@@ -1,4 +1,4 @@
-import { Component, EventEmitter, input, Input, OnChanges, OnDestroy, Output, SimpleChanges } from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, input, Input, OnChanges, OnDestroy, Output, SimpleChanges } from '@angular/core';
 import { DescriptiveQuestionsComponent } from '../questionType/descriptive-questions/descriptive-questions.component';
 import { CommonModule } from '@angular/common';
 import { TypeExamEnum } from '../enums/type-exam.enum';
@@ -10,6 +10,9 @@ import { ApiService } from '../services/api.service';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { BrowserModule } from '@angular/platform-browser';
 import { SecondsToTimePipe } from "../pipes/seconds-to-time.pipe";
+import { CommunicationService } from '../services/comunication.service';
+import { QuestionStatus } from '../models/questions-rate.model';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-select-questions',
@@ -29,17 +32,38 @@ export class SelectQuestionsComponent implements OnChanges, OnDestroy {
   @Input() typeExam!: TypeExamEnum;
   @Output() actionBack = new EventEmitter<void>();
 
-  timeInSeconds: number = 65;
+  timeInSeconds: number = 600;
   timer: any;
 
-  constructor(private router: Router, private apiService: ApiService) { }
+  private subscription!: Subscription;
+  questionsAnswered: string = '0';
+  quantityQuestions: string = '0';
+
+  constructor(private router: Router,
+    private apiService: ApiService,
+    private communicationService: CommunicationService,
+    private cdRef: ChangeDetectorRef
+  ) { }
+
+  ngOnInit(): void {
+    this.subscription = this.communicationService.currentValue.subscribe((status: QuestionStatus) => {
+      this.questionsAnswered = (status.questionsAnswered ?? 0).toString();
+      this.quantityQuestions = (status.quantityQuestions ?? 0).toString();
+  
+      this.cdRef.detectChanges();
+    });
+  }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['typeExam'].currentValue) {
-      this.typeExam = changes['typeExam'].currentValue;
     }
     this.loadTime();
     this.startTimer();
+  }
+
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
+    clearInterval(this.timer);
   }
 
   handleBack() {
@@ -50,9 +74,7 @@ export class SelectQuestionsComponent implements OnChanges, OnDestroy {
     this.router.navigate(['/score']);
   }
 
-  ngOnDestroy(): void {
-    clearInterval(this.timer);
-  }
+
 
   saveTime(): void {
     localStorage.setItem('time', this.timeInSeconds.toString());

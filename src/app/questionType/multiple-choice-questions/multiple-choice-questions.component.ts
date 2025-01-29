@@ -6,6 +6,8 @@ import { BaseComponent } from '../../common/base-component.component';
 import { ToastrService } from 'ngx-toastr';
 import { TypeExamEnum } from '../../enums/type-exam.enum';
 import { Exam } from '../../models/exam.model';
+import { QuestionStatus } from '../../models/questions-rate.model';
+import { CommunicationService } from '../../services/comunication.service';
 
 @Component({
   selector: 'app-multiple-choice-questions',
@@ -17,6 +19,8 @@ export class MultipleChoiceQuestionsComponent extends BaseComponent implements O
 
   @Input() subject: string = '';
   currentStep: number = 0;
+  questionsQuantity: number = 0;
+  questionStatus = new QuestionStatus();
 
   questionsList: { id: number, question: string; options: string[], answer: any[] }[] = [
     {
@@ -65,7 +69,7 @@ export class MultipleChoiceQuestionsComponent extends BaseComponent implements O
     }
   ];
 
-  constructor(private fb: FormBuilder, private toastr: ToastrService) {
+  constructor(private fb: FormBuilder, private toastr: ToastrService, private communicationService: CommunicationService) {
     super();
   }
 
@@ -79,6 +83,20 @@ export class MultipleChoiceQuestionsComponent extends BaseComponent implements O
         }
       );
     }
+
+    const lastPositioned = localStorage.getItem(`QUESTION-POSITIONED-${TypeExamEnum.MULTISELECTION}`);
+    this.currentStep = lastPositioned == null ? 0 : Number(lastPositioned);
+
+    this.questionsQuantity = this.questionsList.length;
+
+    this.notifyChangePage();
+  }
+
+  notifyChangePage(){
+    localStorage.setItem(`QUESTION-POSITIONED-${TypeExamEnum.MULTISELECTION}`, this.currentStep.toString());
+    this.questionStatus.quantityQuestions = this.questionsQuantity;
+    this.questionStatus.questionsAnswered = this.currentStep + 1;
+    this.communicationService.changeValue(this.questionStatus);
   }
 
   onCheckboxChange(event: any, questionId: number, option: string) {
@@ -100,18 +118,20 @@ export class MultipleChoiceQuestionsComponent extends BaseComponent implements O
   nextStep(): void {
     if (this.currentStep < this.questionsList.length - 1) {
       this.currentStep++;
+      this.notifyChangePage();
     }
   }
 
   prevStep(): void {
     if (this.currentStep > 0) {
       this.currentStep--;
+      this.notifyChangePage();
     }
   }
 
   isCurrentStepValid(): boolean {
     const question = this.questionsList[this.currentStep];
-    return question.answer.length > 0; 
+    return question.answer.length > 0;
   }
 
   override back(): void {
