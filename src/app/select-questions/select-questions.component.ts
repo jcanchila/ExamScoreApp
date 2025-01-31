@@ -10,6 +10,7 @@ import { SecondsToTimePipe } from "../pipes/seconds-to-time.pipe";
 import { CommunicationService } from '../services/comunication.service';
 import { QuestionStatus } from '../models/questions-rate.model';
 import { Subscription } from 'rxjs';
+import { ChatComponent } from '../chat/chat.component';
 
 @Component({
   selector: 'app-select-questions',
@@ -18,7 +19,8 @@ import { Subscription } from 'rxjs';
     DescriptiveQuestionsComponent,
     MultipleChoiceQuestionsComponent,
     TrueFalseQuestionsComponent,
-    SecondsToTimePipe
+    SecondsToTimePipe,
+    ChatComponent
   ],
   templateUrl: './select-questions.component.html',
   styleUrl: './select-questions.component.css'
@@ -35,6 +37,7 @@ export class SelectQuestionsComponent implements OnChanges, OnDestroy {
   private subscription!: Subscription;
   questionsAnswered: string = '0';
   quantityQuestions: string = '0';
+  chatVisible: boolean = false;
 
   constructor(private router: Router,
     private communicationService: CommunicationService,
@@ -95,5 +98,9 @@ export class SelectQuestionsComponent implements OnChanges, OnDestroy {
         this.router.navigate(['/score']);
       }
     }, 1000);
+  }
+
+   toggleChat() {
+    this.chatVisible = !this.chatVisible;
   }
 }

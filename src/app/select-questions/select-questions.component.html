@@ -24,3 +24,7 @@
       (actionGoToScore)="handleGoToScore($event)"></app-true-false-questions>
   </div>
 </div>
+<div class="chat-sidecar" [ngClass]="{'visible': chatVisible}">
+  <app-chat></app-chat>
+</div>
+<button class="floating-button" (click)="toggleChat()">Chat</button>

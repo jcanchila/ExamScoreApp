@@ -1,0 +1,15 @@
+<div class="chat-container">
+  <div class="chat-header">
+    <h3>Chat</h3>
+    <button class="toggle-button" (click)="toggleChat()">&#x2715;</button>
+  </div>
+  <div class="chat-messages">
+    <div *ngFor="let message of messages" [ngClass]="{'user-message': message.sender === 'user', 'system-message': message.sender === 'system'}">
+      {{ message.text }}
+    </div>
+  </div>
+  <form [formGroup]="chatForm" (ngSubmit)="sendMessage()" class="chat-input">
+    <input type="text" formControlName="message" placeholder="Type a message..." />
+    <button type="submit">Send</button>
+  </form>  
+</div>
